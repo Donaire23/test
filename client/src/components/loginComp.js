@@ -17,6 +17,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
     const isLoading = useSelector((state) => state.Login.loading);
     const modalIsOpen = useSelector((state) => state.Login.modalIsOpen)
+    const [tokenChecked, setTokenChecked] = useState(false);
 
     const submit = (e) => {
       e.preventDefault()
@@ -41,21 +42,31 @@ import Spinner from 'react-bootstrap/Spinner';
     
     }
 
-    const CheckToken = () => {
-      const token = Cookies.get('authToken');
-  
-      if (token) {
-        Navigate('/welcome');
-        return null;
-      }
-    };
-      useEffect(() => {
+  const CheckToken = async () => {
+    const token = await Cookies.get('authToken');
 
-    CheckToken()
+    if (token) {
+      Navigate('/welcome');
+    }
 
-  }, [])
+    setTokenChecked(true);
+  };
 
- 
+  useEffect(() => {
+    CheckToken();
+  }, []);
+
+
+    if (!tokenChecked || isLoading) {
+    // Show a loading indicator or return null until token check is complete
+    return (
+      <div className="text-center">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
    
     return (
 
