@@ -52,8 +52,11 @@ import Spinner from 'react-bootstrap/Spinner';
         return null;
       }
     };
+      useEffect(() => {
 
-    CheckToken();
+    CheckToken()
+
+  }, [])
 
    
     return (
