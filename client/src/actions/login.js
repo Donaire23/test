@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 export const setLog = createAsyncThunk("login", async (data) => {
     try {
-        const response = await Axios.post("http://localhost:3001/login", data);
+        const response = await Axios.post("https://backend-seven-sage.vercel.app/login", data);
         const token = response.data.tok
         Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         Cookies.set('authToken', token, { expires: 1, secure: true, sameSite: 'None' });
