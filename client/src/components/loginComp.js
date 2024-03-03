@@ -7,6 +7,17 @@ import { useEffect } from 'react';
 import Modal from 'react-modal';
 import Spinner from 'react-bootstrap/Spinner';
 
+    const CheckToken = () => {
+      const token = Cookies.get('authToken');
+  
+      if (token) {
+        return null;
+      }
+    };
+
+CheckToken()
+
+
   const LoginComponents = () => {
 
     const dispatch = useDispatch();
@@ -41,22 +52,6 @@ import Spinner from 'react-bootstrap/Spinner';
       }
     
     }
-
-    const CheckToken = () => {
-      const token = Cookies.get('authToken');
-  
-      if (token) {
-        Navigate('/welcome');
-        return null;
-      }
-    };
-  useEffect(() => {
-
-    CheckToken()
-
-  }, [])
-
-
    
     return (
 
