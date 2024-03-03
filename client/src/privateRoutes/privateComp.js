@@ -19,7 +19,7 @@ const PrivateRoute = ({element}) => {
       setIsAuthenticated(false);
 
     }
-  }, []);
+  });
 
 
 
