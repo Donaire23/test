@@ -1,5 +1,6 @@
 import RegisterComponent from "../components/regComp"
 
+
 const Register = () => {
 
   return (

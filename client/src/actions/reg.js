@@ -49,7 +49,6 @@ const register = createSlice({
             state.responseData = null;
             state.loading = true;
             state.modalIsOpen = true;
-             console.log("pending", state.loading, state.modalIsOpen)
         })
         .addCase(setReg.fulfilled, (state, action) => {
             state.full_name = ""
@@ -57,7 +56,6 @@ const register = createSlice({
             state.password = ""
             state.repeatPassword = ""
             state.responseData = action.payload
-            console.log("fulfilled", state.loading, state.modalIsOpen)
         })
         .addCase(setReg.rejected, (state, action) => {
             state.errors = HttpStatusCode.BadRequest

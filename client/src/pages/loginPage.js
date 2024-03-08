@@ -5,7 +5,10 @@ const LoginPage = () => {
   return (
 
     <>
-      <LoginComponents/>
+    <div className="color red">
+     <LoginComponents/>  
+    </div>
+      
     </>
 
 

@@ -18,10 +18,10 @@ router.post("/", async(req, res) => {
       
             if (isPasswordValid) {
       
-              const userId = existingUser._id;
+               const { _id: userId, full_name } = existingUser;
               const token = jwt.sign({ userId }, secretKey, { expiresIn: "1d" });
       
-              res.status(200).json({tok: token, ID: userId, Result: "Login Successful"});
+              res.status(200).json({tok: token, ID: userId,  name: full_name, Result: "Login Successful"});
             } else {
               res.status(401).json({ message: 'Invalid credentials' });
             }
@@ -36,4 +36,5 @@ router.post("/", async(req, res) => {
 });
 
 
-module.exports = router
+module.exports = router;
+

@@ -18,7 +18,7 @@ mongoose.connection.on("error", (error) => {
 });
 
 
-
+const Register = require('./model/register')
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
@@ -26,9 +26,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const registerRoutes = require('./modules/registerUser');
 const loginRoutes  = require('./modules/loginUser');
+const getUserRoutes = require('./modules/getCredentials')
 
 app.use('/register', registerRoutes);
 app.use('/login', loginRoutes);
+app.use('/user', getUserRoutes)
+
 
 app.listen(PORT, () => {
     console.log(`PORT is listening to ${PORT}`)

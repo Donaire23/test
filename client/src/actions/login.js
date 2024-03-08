@@ -7,14 +7,16 @@ export const setLog = createAsyncThunk("login", async (data) => {
     try {
         const response = await Axios.post("http://localhost:3001/login", data);
         const token = response.data.tok
+        const ID = response.data.ID
         Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         Cookies.set('authToken', token, { expires: 1, secure: true, sameSite: 'None' });
-        
-        return HttpStatusCode.Accepted;
+        Cookies.set('userId', ID);
+        return response.data
     } catch(error) {
         throw error.response.data
     }
 })
+
 
 const login = createSlice({
     name: "Login",
@@ -23,7 +25,7 @@ const login = createSlice({
         password: '',
         errors: null,
         loading: null, 
-        modalIsOpen: null 
+        modalIsOpen: null
     },
     reducers: {
         setEmail: (state, action) => {
@@ -43,14 +45,13 @@ const login = createSlice({
         builder
         .addCase(setLog.pending, (state, action) => {
             state.errors = null; 
-            state.responseData = null;
             state.loading = true;
             state.modalIsOpen = true;
         })
-        .addCase(setLog.fulfilled, (state,action) => {
-            state.responseData = action.payload;
+        .addCase(setLog.fulfilled, (state, action) => {
+            console.log('Response data:', action.payload);
+            state.data = action.payload;
             state.errors = null;
-            state.responseData = action.payload
             window.location.reload()
         })
         .addCase(setLog.rejected, (state, action) => {

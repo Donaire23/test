@@ -1,118 +1,107 @@
-import { useState, useEffect } from "react";
-import Axios from 'axios'
-import Swiper from "../components/swiper";
+import React, { useEffect, useState } from 'react';
+import { Layout, Menu } from 'antd';
+import Cookies from 'js-cookie';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUser, logoutUser } from '../actions/credentials';
+import {
+  UserOutlined,
+  BellOutlined,
+  SearchOutlined,
+  InboxOutlined,
+  CalendarOutlined,
+  OrderedListOutlined,
+  BoxPlotOutlined,
+  LogoutOutlined
+} from '@ant-design/icons';
+const { Sider, Content } = Layout;
+
 
 const Home = () => {
 
- 
+  const [collapsed, setCollapsed] = useState(true);
+  const dispatch = useDispatch()
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
+  //get the user id from cookies and we pass it to the api
+  const id = Cookies.get("userId");
   
-    
+  //send the id to the backend so that we can get the credentials
+  useEffect(() => {
+    dispatch(getUser(id));
+  }, []);
+
+  //get user name
+  const userName = useSelector((state) => state.test.responseData?.name);
+
+  //get userID to logout
+  const userID = useSelector((state) => state.test.responseData?.ID);
+  
+  const handleLogout = () => {
+    try {
+      Cookies.remove('authToken');
+      Cookies.remove('userId');
+    } catch(error) {
+      console.log(error)
+    } finally {
+      window.location.reload()
+    }
+   
+  }
+
   return (
-
-    <>
-
-      <div >
-
-        <div className="d-flex flex-row home-container bg bg-dark">
-          <div className="bg-white col-lg-1 d-flex flex-column">
-
-              <div className="text-center bg-white mb-5 mt-5">
-                <span className="fs-1 bg-white">
-                  <i class="fa-brands fa-facebook-messenger"></i>
-                </span>
-              </div>
-
-              <div  className="text-center bg-white d-flex flex-column">
-
-                <span className="fs-4 bg-white mb-3">
-                 <i class="fa-regular fa-user"></i>
-                </span>
-
-                <span className="fs-4 bg-white mb-3">
-                  <i class="fa-solid fa-comment-dots"></i>
-                </span>
-
-                <span className="fs-4 bg-white mb-3">
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-
-                <span className="fs-4 bg-white mb-3">
-                  <i class="fa-solid fa-gear"></i>
-                </span>
-
-              </div>
-
-              <div  className="text-center bg-white">
-
-                <span className="fs-4 bg-white">
-                  <i class="fa-solid fa-circle-user"></i>
-                </span>
-
-              </div>
-
-              <div  className="text-center bg-white mt-5">
-
-                <span className="fs-4 bg-white">
-                  < i class="fa-solid fa-bars"></i>
-                </span>
-
-              </div>
-
-
-              <div  className="text-center bg-white mt-5">
-
-                <span className="fs-4 bg-white">
-                 <button>Logout</button>
-                </span>
-
-              </div>
- 
+    <Layout style={{ minHeight: '100vh', background: '#fff' }}>
+      <Sider collapsible collapsed={collapsed} onCollapse={toggleCollapsed} style={{ background: '#F5F5F5', borderRight: '1px solid rgba(0,0,0,0.2)'  }}>
+        <div className="logo" style={{ background: '#F5F5F5'}}  />
+        <div>
+          <div style={{ display: 'flex', justifyContent: collapsed ? 'center' : 'flex-end', alignItems: 'center', padding: '8px', cursor: 'pointer', color: 'black' }} onClick={toggleCollapsed}>
+            {collapsed ? '☰' : '✖'}
           </div>
-
-          {/* section 2 */}
-
-          <div className="bg-white border border-danger col-lg-2">
-
-            <p className="bg-white fs-2 ms-3 fw-bold">Chats</p>
-
-            <div className="col-lg-10 ms-3">
-
-                {/* <span className="ms-2"> 
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                </span> */}
-             
-              <input className="ms-3 search-bar pt-2 pb-2" placeholder="Search Messages or Users"/>
-
-            </div>
-
-            <div className="col-lg-10 ms-3 mt-5">
-
-              <Swiper/>
-
-            </div>
-
-          </div>
-
-          <div className="third-sec bg-white border border-black col-lg-9">
-
-          </div>
-
         </div>
 
-        
+        <Menu theme="light" defaultSelectedKeys={['1']} mode="inline" style={{ background: '#F5F5F5', color: '#000', border: 'none' }}>
+          <Menu.Item key="0" icon={<UserOutlined />}>
+            {userName} 
+          </Menu.Item>
+          <Menu.Item key="1" icon={<BellOutlined />}>
+            Notification
+          </Menu.Item>
+          <Menu.Item key="2" icon={<SearchOutlined />}>
+            Search
+          </Menu.Item>
+          <Menu.Item key="3" icon={<InboxOutlined />}>
+            Inbox
+          </Menu.Item>
+          <Menu.Item key="4" icon={<CalendarOutlined />}>
+            Today
+          </Menu.Item>
+          <Menu.Item key="5" icon={<OrderedListOutlined />}>
+           Upcoming
+          </Menu.Item>
+          <Menu.Item key="6" icon={<BoxPlotOutlined />}>
+           Filters & Labels
+          </Menu.Item>
+          <Menu.Item key="7" icon={<LogoutOutlined />} onClick={handleLogout}>
+            Logout
+          </Menu.Item>
+        </Menu>
+      </Sider>
+
+      <Layout className="site-layout" style={{background: 'white'}}>
+        <Content style={{ margin: '16px' }}>
+          <div style={{ padding: 24, minHeight: 360, background: 'white' }}>
+            Main content
+          </div>
+        </Content>
+      </Layout>
+    </Layout>
+
+   // my content end
 
 
-     
+  );
+};
 
-      </div>
-
-      
-
-
-    </>
-
-  )
-
-}
-
-export default Home
+export default Home;
