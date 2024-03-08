@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 export const getUser = createAsyncThunk("user", async (userId) => {
     try {
-      const response = await Axios.get(`http://localhost:3001/user?userId=${userId}`);
+      const response = await Axios.get(`https://backend-seven-sage.vercel.app/user?userId=${userId}`);
       return response.data;
     } catch (error) {
       throw error.response.data;
