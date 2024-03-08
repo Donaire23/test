@@ -20,7 +20,13 @@ mongoose.connection.on("error", (error) => {
 
 const Register = require('./model/register')
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://front-end-eight-swart.vercel.app"],
+    methods: ["POST, GET, DELETE, PUT"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
